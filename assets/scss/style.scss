@@ -1,0 +1,223 @@
+@import '../../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+
+.page {
+  font-family: Arial;
+  font-style: normal;
+  background-color: #fbfbfb;
+}
+
+// header
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 36px 0;
+  border-bottom: 1px solid #e5e5e5;
+  &__title {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: normal;
+  }
+  &__update {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  &__btn-update {
+    border: none;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: auto;
+    background-color: #fff;
+  }
+  .search {
+    &__form {
+      min-width: 321px;
+      position: relative;
+    }
+    &__btn {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 0.45rem;
+      right: 0.75rem;
+      background-color: transparent;
+    }
+    svg {
+      vertical-align: top;
+    }
+  }
+}
+
+//  main
+.news {
+  padding-top: 26px;
+  height: 100vh;
+  &__type {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__link-list {
+    display: flex;
+    gap: 20px;
+    .news__link {
+      color: #0029ff;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: normal;
+    }
+    .news__link.active {
+      color: #000;
+    }
+  }
+  &__grid-list {
+    display: flex;
+    gap: 10px;
+  }
+  &__grid-btn {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+  }
+  &__grid-btn.active {
+    rect {
+      fill: #0029ff;
+    }
+  }
+  &__nothing-found {
+    text-align: center;
+    padding-top: 60px;
+  }
+  &__list {
+    padding: 28px 0 50px;
+    gap: 20px;
+    li {
+      width: 100%;
+    }
+  }
+  &__list.line {
+    display: flex;
+    flex-direction: column;
+  }
+  &__list.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    justify-content: stretch;
+  }
+  &__list.line {
+    .news-card__body {
+      display: flex;
+      gap: 30px;
+      img {
+        max-width: 200px;
+      }
+    }
+  }
+  .news-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.05),
+      0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+    padding: 30px 30px 16px;
+
+    &__body {
+      flex-grow: 1;
+      img {
+        object-fit: contain;
+      }
+    }
+    &__body-text {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    &__title {
+      color: #0029ff;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 22px;
+    }
+    &__description {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    &__link {
+      color: #0029ff;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      text-decoration-line: underline;
+      padding-top: 20px;
+      width: fit-content;
+    }
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 20px;
+      a,
+      p {
+        color: #dcdcdc;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+      }
+      a {
+        text-decoration-line: underline;
+      }
+    }
+  }
+  .news-pagination {
+    padding-bottom: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .header {
+    flex-direction: column;
+    gap: 23px;
+    .search {
+      &__form {
+        min-width: 500px;
+      }
+    }
+  }
+  .news {
+    &__list.grid {
+      display: flex;
+      flex-direction: column;
+    }
+    &-card__body {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .news__list.line .news-card__body img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    gap: 23px;
+    &__title {
+      font-size: 24px;
+    }
+    .search {
+      &__form {
+        min-width: 300px;
+      }
+    }
+  }
+}
