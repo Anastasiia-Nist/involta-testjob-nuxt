@@ -1,9 +1,18 @@
 # involta-testjob-nuxt
 
-*Перенос проекта involta-testjob-vuex на Nuxt*
+_Перенос проекта involta-testjob-vuex на Nuxt_
 
 
-Доработать:
-- динамическая маршрутизация (сейчас через query params),
-- пофиксить или переписать pagination (небольшой баг)
-- CORS и fetch / asyncData ???
+## Установка и запуск проекта:
+
+Клонировать репозиторий:
+
+    git clone https://github.com/Anastasiia-Nist/involta-testjob-nuxt.git
+
+Установить зависимости:
+
+    npm install
+
+Запустить проект:
+
+    npm run dev
