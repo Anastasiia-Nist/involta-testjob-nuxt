@@ -73,8 +73,8 @@
     <NewsList :newsList="newsList" :grid="grid">
       <li
         v-for="(news, index) in newsList.slice(
-          indexOfFirstNews,
-          indexOfLastNews
+          this.indexOfFirstNews,
+          this.indexOfLastNews
         )"
         :key="index"
       >
@@ -82,7 +82,10 @@
       </li>
     </NewsList>
     <UIPagination
-      :totalPages="newsList.length"
+      v-show="!$store.state.isLoading && newsList.length !== 0"
+      :totalPages="
+        newsList.length !== 0 ? Math.ceil(newsList.length / newsPerPage) : 1
+      "
       :perPage="newsPerPage"
       class="news-pagination"
     ></UIPagination>
@@ -92,20 +95,16 @@
 export default {
   data() {
     return {
+      allNews: [],
       grid: "grid",
       currentPage: 1,
       newsPerPage: 4,
     };
   },
-  props: {
-    allNews: {
-      type: Array,
-    },
-  },
   watch: {
     $route(to) {
-      to.query.page
-        ? (this.currentPage = to.query.page)
+      to.params.page
+        ? (this.currentPage = to.params.page)
         : (this.currentPage = 1);
     },
   },
@@ -118,13 +117,13 @@ export default {
     },
     newsList() {
       const query = this.$route.query;
-      const allNews = this.allNews;
+      const allNews = (this.allNews = this.$store.getters.getNewsList);
       if (query.type === "all" || !query.type) {
         return query.search
           ? allNews.filter(
               ({ title, content }) =>
                 title.toLowerCase().includes(query.search.toLowerCase()) ||
-                content.toLowerCase().includes(query.search.toLowerCase())
+                content?.toLowerCase().includes(query.search.toLowerCase())
             )
           : allNews;
       }
@@ -133,7 +132,9 @@ export default {
           ? allNews.filter(
               ({ title, content, link }) =>
                 (title.toLowerCase().includes(query.search.toLowerCase()) ||
-                  content.toLowerCase().includes(query.search.toLowerCase())) &&
+                  content
+                    ?.toLowerCase()
+                    .includes(query.search.toLowerCase())) &&
                 link.toLowerCase().includes(query.type)
             )
           : allNews.filter(({ link }) =>
@@ -144,13 +145,15 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("setNewsList");
+    const param = this.$route.params.page;
+    param ? (this.currentPage = param) : (this.currentPage = 1);
     if (localStorage.filterGrid) {
       this.grid = localStorage.filterGrid;
       localStorage.filterGrid === "line"
         ? (this.newsPerPage = 3)
         : (this.newsPerPage = 4);
     }
-    this.$route.query.page ? this.currentPage = this.$route.query.page : this.currentPage = 1;
   },
   methods: {
     handleGridNews(value) {
@@ -162,7 +165,8 @@ export default {
       const query = this.$route.query;
       if (query.type != e.target.id) {
         this.$router.push({
-          query: { ...query, type: e.target.id, page: 1 },
+          params: { page: 1 },
+          query: { ...query, type: e.target.id },
         });
       }
     },

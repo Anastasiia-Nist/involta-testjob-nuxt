@@ -2,7 +2,7 @@
   <article class="news-card">
     <div class="news-card__body">
       <img
-        :src="news.enclosure.url"
+        :src="news.enclosure?.url"
         :alt="news.title"
         v-show="grid === 'line'"
       />

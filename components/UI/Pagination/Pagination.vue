@@ -1,45 +1,44 @@
 <template>
-  <nav class="news-pagination" v-show="totalPages !== 0">
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="totalPages"
-      :per-page="perPage"
-      aria-controls="newsList"
-      first-number
-      last-number
-      @change="paginate"
-    ></b-pagination>
-  </nav>
+  <b-pagination-nav
+    v-show="totalPages !== 0"
+    :link-gen="paginate"
+    :number-of-pages="totalPages"
+    use-router
+  >
+  </b-pagination-nav>
 </template>
 <script>
 export default {
   data() {
     return {
       currentPage: 1,
-    }
+      count: 1,
+    };
   },
   props: {
     totalPages: {
       type: Number,
+      require: true,
     },
     perPage: {
       type: Number,
+      require: true,
     },
   },
   methods: {
-    paginate(pageTo) {
-      const query = this.$route.query;
-      this.$router.push({
-        query: { ...query, page: pageTo },
-      });
+    paginate(pageNum) {
+      return {
+        path: `/page/${pageNum}`,
+        query: { ...this.$route.query },
+      };
     },
   },
   mounted() {
-    this.currentPage = parseInt(this.$route.query.page, 10);
+    this.currentPage = parseInt(this.$route.params.page, 10);
   },
   watch: {
     $route(to) {
-      this.currentPage = parseInt(to.query.page, 10);
+      this.currentPage = parseInt(to.params.page, 10);
     },
   },
 };

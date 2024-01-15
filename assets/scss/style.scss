@@ -1,5 +1,5 @@
-@import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-@import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+@import "../../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "../../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
 
 .page {
   font-family: Arial;
@@ -176,9 +176,13 @@
   }
   .news-pagination {
     padding-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &__list {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 16px;
+    }
   }
 }
 

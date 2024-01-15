@@ -52,12 +52,11 @@ export default {
     };
   },
   methods: {
-    async handleUpdNews() {
+    handleUpdNews() {
       if (this.$route.fullPath !== "/") {
-        await this.$router.replace({ path: "/" });
+        this.$router.replace({ path: "/" });
       }
-      // this.$nuxt.refresh() - fetch CORS Errors
-      location.reload();
+      this.$nuxt.refresh();
     },
     handleSubmitSearch(event) {
       const query = this.$route.query;
