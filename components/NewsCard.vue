@@ -20,7 +20,7 @@
       <b-link target="_blank" :href="`https://${typeNews}`">{{
         typeNews
       }}</b-link>
-      <p>{{ news.pubDate }}</p>
+      <p>{{ newsData }}</p>
     </div>
   </article>
 </template>
@@ -37,6 +37,9 @@ export default {
     },
   },
   computed: {
+    newsData() {
+      return this.news.pubDate.replace(/\+.*/, '').replace(/\D+(?!,)/, '').replace(/\d{2}:\d{2}:\d{2}/, '');
+    },
     typeNews() {
       return this.news.link.includes("lenta") ? "www.lenta.ru" : "www.mos.ru";
     },

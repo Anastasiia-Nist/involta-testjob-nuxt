@@ -130,7 +130,8 @@
     &__body {
       flex-grow: 1;
       img {
-        object-fit: contain;
+        object-fit: cover;
+        aspect-ratio: 200/120 ;
       }
     }
     &__body-text {
