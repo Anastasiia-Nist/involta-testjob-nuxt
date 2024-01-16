@@ -69,26 +69,24 @@
         </button>
       </div>
     </section>
-    <p class="news__nothing-found" v-if="!newsList">Сервер не доступен</p>
-    <NewsList :newsList="newsSlice()" :grid="grid">
-      <li
-        v-for="(news, index) in newsSlice()"
-        :key="index"
-      >
-        <NewsCard :news="news" :grid="grid"></NewsCard>
-      </li>
-    </NewsList>
-    <UIPagination
-      v-show="!$store.state.isLoading && newsSlice().length !== 0"
-      :totalPages="
-        newsList.length !== 0 ? Math.ceil(newsList.length / newsPerPage) : 1
-      "
-      :perPage="newsPerPage"
-      class="news-pagination"
-    ></UIPagination>
+    <section class="news__main">
+      <p class="news__nothing-found" v-if="!newsList">Сервер не доступен</p>
+      <NewsList :newsList="newsSlice()" :grid="grid">
+        <li v-for="(news, index) in newsSlice()" :key="index">
+          <NewsCard :news="news" :grid="grid"></NewsCard>
+        </li>
+      </NewsList>
+      <UIPagination
+        class="news-pagination"
+        v-show="paginationShow"
+        :totalPages="totalPages"
+        :perPage="newsPerPage"
+      />
+    </section>
   </main>
 </template>
-  <script>
+
+<script>
 export default {
   data() {
     return {
@@ -106,6 +104,14 @@ export default {
     },
   },
   computed: {
+    paginationShow() {
+      return !this.$store.state.isLoading && this.newsSlice().length !== 0
+        ? true
+        : false;
+    },
+    totalPages() {
+      return this.newsList.length !== 0 ? Math.ceil(this.newsList.length / this.newsPerPage) : 1
+    },
     indexOfFirstNews() {
       return this.currentPage * this.newsPerPage - this.newsPerPage;
     },
@@ -132,10 +138,10 @@ export default {
                   content
                     ?.toLowerCase()
                     .includes(query.search.toLowerCase())) &&
-                link.toLowerCase().includes(query.type)
+                link.toLowerCase().includes(`${query.type}.ru`)
             )
           : allNews.filter(({ link }) =>
-              link.toLowerCase().includes(query.type)
+              link.toLowerCase().includes(`${query.type}.ru`)
             );
       }
       return allNews;
@@ -154,10 +160,7 @@ export default {
   },
   methods: {
     newsSlice() {
-      return this.newsList.slice(
-          this.indexOfFirstNews,
-          this.indexOfLastNews
-        )
+      return this.newsList.slice(this.indexOfFirstNews, this.indexOfLastNews);
     },
     handleGridNews(value) {
       localStorage.filterGrid = value;
