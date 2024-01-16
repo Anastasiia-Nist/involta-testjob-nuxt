@@ -70,19 +70,16 @@
       </div>
     </section>
     <p class="news__nothing-found" v-if="!newsList">Сервер не доступен</p>
-    <NewsList :newsList="newsList" :grid="grid">
+    <NewsList :newsList="newsSlice()" :grid="grid">
       <li
-        v-for="(news, index) in newsList.slice(
-          this.indexOfFirstNews,
-          this.indexOfLastNews
-        )"
+        v-for="(news, index) in newsSlice()"
         :key="index"
       >
         <NewsCard :news="news" :grid="grid"></NewsCard>
       </li>
     </NewsList>
     <UIPagination
-      v-show="!$store.state.isLoading && newsList.length !== 0"
+      v-show="!$store.state.isLoading && newsSlice().length !== 0"
       :totalPages="
         newsList.length !== 0 ? Math.ceil(newsList.length / newsPerPage) : 1
       "
@@ -156,6 +153,12 @@ export default {
     }
   },
   methods: {
+    newsSlice() {
+      return this.newsList.slice(
+          this.indexOfFirstNews,
+          this.indexOfLastNews
+        )
+    },
     handleGridNews(value) {
       localStorage.filterGrid = value;
       this.grid = value;
