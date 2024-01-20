@@ -5,7 +5,7 @@
     </div>
     <p
       class="news__nothing-found"
-      v-show="newsList.length === 0 && !$store.state.isLoading"
+      v-if="newsList.length === 0 && !$store.state.isLoading"
     >
       Ничего не найдено
     </p>
@@ -15,7 +15,9 @@
       id="newsList"
       v-show="!$store.state.isLoading"
     >
-      <slot></slot>
+      <li v-for="(news, index) in newsList" :key="index">
+        <NewsCard :news="news" :grid="grid"></NewsCard>
+      </li>
     </ul>
   </section>
 </template>

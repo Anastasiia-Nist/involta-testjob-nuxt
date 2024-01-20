@@ -1,11 +1,13 @@
 export default {
+  mode: "universal",
+  target: "server",
   server: {
     port: 3000,
     host: "localhost",
   },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "involta-testjob-nuxt",
+    title: "Список новостей RSS",
     htmlAttrs: {
       lang: "ru",
     },
@@ -35,6 +37,7 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     "bootstrap-vue/nuxt",
     "@nuxtjs/axios",
+    "@nuxt/http"
   ],
   bootstrapVue: {
     // Установите плагин `IconsPlugin` (в дополнение к плагину `BootstrapVue`)

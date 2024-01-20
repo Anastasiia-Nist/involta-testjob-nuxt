@@ -71,11 +71,7 @@
     </section>
     <section class="news__main">
       <p class="news__nothing-found" v-if="!newsList">Сервер не доступен</p>
-      <NewsList :newsList="newsSlice()" :grid="grid">
-        <li v-for="(news, index) in newsSlice()" :key="index">
-          <NewsCard :news="news" :grid="grid"></NewsCard>
-        </li>
-      </NewsList>
+      <NewsList :newsList="newsSlice" :grid="grid"> </NewsList>
       <UIPagination
         class="news-pagination"
         v-show="paginationShow"
@@ -94,33 +90,46 @@ export default {
       grid: "grid",
       currentPage: 1,
       newsPerPage: 4,
+      index: {},
     };
   },
+  created() {
+    this.allNews = this.$store.getters.getNewsList;
+    const page = this.$route.params.page;
+    page ? (this.currentPage = page) : (this.currentPage = 1);
+    this.index = {
+      OfFirstNews: page * this.newsPerPage - this.newsPerPage,
+      OfLastNews: page * this.newsPerPage,
+    };
+  },
+  mounted() {
+    if (localStorage.filterGrid) {
+      this.grid = localStorage.filterGrid;
+      localStorage.filterGrid === "line"
+        ? (this.newsPerPage = 3)
+        : (this.newsPerPage = 4);
+    }
+  },
   watch: {
-    $route(to) {
-      to.params.page
-        ? (this.currentPage = to.params.page)
-        : (this.currentPage = 1);
+    currentPage: function () {
+      // обновляем для вызова asyncData
+      this.$nuxt.refresh();
     },
   },
   computed: {
     paginationShow() {
-      return !this.$store.state.isLoading && this.newsSlice().length !== 0
+      return !this.$store.state.isLoading && this.newsSlice.length !== 0
         ? true
         : false;
     },
     totalPages() {
-      return this.newsList.length !== 0 ? Math.ceil(this.newsList.length / this.newsPerPage) : 1
-    },
-    indexOfFirstNews() {
-      return this.currentPage * this.newsPerPage - this.newsPerPage;
-    },
-    indexOfLastNews() {
-      return this.currentPage * this.newsPerPage;
+      return this.newsList.length !== 0
+        ? Math.ceil(this.newsList.length / this.newsPerPage)
+        : 1;
     },
     newsList() {
       const query = this.$route.query;
-      const allNews = (this.allNews = this.$store.getters.getNewsList);
+      const allNews = this.allNews;
       if (query.type === "all" || !query.type) {
         return query.search
           ? allNews.filter(
@@ -146,26 +155,23 @@ export default {
       }
       return allNews;
     },
-  },
-  mounted() {
-    this.$store.dispatch("setNewsList");
-    const param = this.$route.params.page;
-    param ? (this.currentPage = param) : (this.currentPage = 1);
-    if (localStorage.filterGrid) {
-      this.grid = localStorage.filterGrid;
-      localStorage.filterGrid === "line"
-        ? (this.newsPerPage = 3)
-        : (this.newsPerPage = 4);
-    }
-  },
-  methods: {
     newsSlice() {
-      return this.newsList.slice(this.indexOfFirstNews, this.indexOfLastNews);
+      return [...this.newsList].slice(
+        this.index.OfFirstNews,
+        this.index.OfLastNews
+      );
     },
+  },
+
+  methods: {
     handleGridNews(value) {
       localStorage.filterGrid = value;
       this.grid = value;
       value === "line" ? (this.newsPerPage = 3) : (this.newsPerPage = 4);
+      this.$router.push({
+        params: { page: 1 },
+        query: { ...this.$route.query },
+      });
     },
     handleLinkType(e) {
       const query = this.$route.query;

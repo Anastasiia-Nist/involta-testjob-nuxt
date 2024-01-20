@@ -1,9 +1,9 @@
 <template>
   <b-pagination-nav
+    v-model="currentPage"
     v-show="totalPages !== 0"
     :link-gen="paginate"
     :number-of-pages="totalPages"
-    use-router
   >
   </b-pagination-nav>
 </template>
@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       currentPage: 1,
-      count: 1,
     };
   },
   props: {
@@ -27,19 +26,15 @@ export default {
   },
   methods: {
     paginate(pageNum) {
+      const query = this.$route.query;
       return {
-        path: `/page/${pageNum}`,
-        query: { ...this.$route.query },
+        params: { page: pageNum },
+        query: { ...query },
       };
     },
   },
   mounted() {
     this.currentPage = parseInt(this.$route.params.page, 10);
-  },
-  watch: {
-    $route(to) {
-      this.currentPage = parseInt(to.params.page, 10);
-    },
   },
 };
 </script>
