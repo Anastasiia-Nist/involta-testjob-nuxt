@@ -1,6 +1,6 @@
 # involta-testjob-nuxt
 
-_Перенос проекта involta-testjob-vuex на Nuxt_
+_Лента RSS новостей_
 
 
 ## Установка и запуск проекта:
