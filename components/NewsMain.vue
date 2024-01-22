@@ -110,12 +110,12 @@ export default {
         : (this.newsPerPage = 4);
     }
   },
-  watch: {
-    currentPage: function () {
-      // обновляем для вызова asyncData
-      this.$nuxt.refresh();
-    },
-  },
+  // watch: {
+  //   currentPage: function () {
+  //     // обновляем для вызова asyncData
+  //     //this.$nuxt.refresh();
+  //   },
+  // },
   computed: {
     paginationShow() {
       return !this.$store.state.isLoading && this.newsSlice.length !== 0
