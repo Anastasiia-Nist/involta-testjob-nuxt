@@ -32,6 +32,13 @@
     padding: 0;
     margin: auto;
     background-color: #fff;
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+    .b-icon.bi {
+      width: 30px;
+      height: 30px;
+    }
   }
   .search {
     &__form {

@@ -14,7 +14,7 @@ export const getters = {
 };
 
 export const mutations = {
-  gotData(state, data) {
+  setNewsList(state, data) {
     state.newsList = data;
   },
   setIsLoading(state, data) {
@@ -26,7 +26,16 @@ export const mutations = {
 };
 
 export const actions = {
-  async setNewsList({ commit }, data) {
-    commit("gotData", data)
-  },
+  async nuxtServerInit({ commit }) {
+    try {
+      const response = await fetch("http://localhost:3000/api/news");
+      if (!response.ok) {
+        throw new Error("Ошибка при загрузке новостей");
+      }
+      const data = await response.json();
+      commit("setNewsList", data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 };

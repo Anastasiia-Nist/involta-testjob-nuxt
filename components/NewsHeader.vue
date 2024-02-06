@@ -2,17 +2,13 @@
   <header class="header">
     <div class="header__update">
       <h1 class="header__title">Список новостей</h1>
-      <b-button
-        class="header__btn-update rounded-circle"
-        variant="outline-primary"
-        @click="handleUpdNews"
-      >
+      <a href="/" class="header__btn-update rounded-circle">
         <b-icon
           icon="arrow-repeat"
           font-scale="1"
           class="rounded-circle"
         ></b-icon>
-      </b-button>
+      </a>
     </div>
     <div class="search">
       <b-form class="search__form" @submit.prevent="handleSubmitSearch">
