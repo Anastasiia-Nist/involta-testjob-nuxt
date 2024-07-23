@@ -33,7 +33,7 @@ export default {
       };
     },
   },
-  mounted() {
+  created() {
     this.currentPage = parseInt(this.$route.params.page, 10);
   },
 };

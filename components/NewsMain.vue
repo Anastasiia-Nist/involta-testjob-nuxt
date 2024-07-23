@@ -97,10 +97,7 @@ export default {
     this.allNews = this.$store.getters.getNewsList;
     const page = this.$route.params.page;
     page ? (this.currentPage = page) : (this.currentPage = 1);
-    this.index = {
-      OfFirstNews: page * this.newsPerPage - this.newsPerPage,
-      OfLastNews: page * this.newsPerPage,
-    };
+    this.updateIndexPage();
   },
   mounted() {
     if (localStorage.filterGrid) {
@@ -109,6 +106,7 @@ export default {
         ? (this.newsPerPage = 3)
         : (this.newsPerPage = 4);
     }
+    this.updateIndexPage();
   },
   computed: {
     paginationShow() {
@@ -158,10 +156,17 @@ export default {
   },
 
   methods: {
+    updateIndexPage() {
+      this.index = {
+        OfFirstNews: this.currentPage * this.newsPerPage - this.newsPerPage,
+        OfLastNews: this.currentPage * this.newsPerPage,
+      };
+    },
     handleGridNews(value) {
       localStorage.filterGrid = value;
       this.grid = value;
       value === "line" ? (this.newsPerPage = 3) : (this.newsPerPage = 4);
+      this.updateIndexPage();
       this.$router.push({
         params: { page: 1 },
         query: { ...this.$route.query },
